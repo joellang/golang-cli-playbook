@@ -3,6 +3,7 @@ package module1
 import (
 	"bufio"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -11,7 +12,7 @@ import (
 )
 
 func TestModule1CheckEnvGOOS(t *testing.T) {
-	found := OpenFileAndFindNthString("module1.txt", 0, "GOOS")
+	found := OpenFileAndFindNthString("module1.txt", 0, "set GOOS")
 
 	if !found {
 		t.Errorf("'go env' does not work as expected")
@@ -68,6 +69,7 @@ func OpenFileAndFindNthString(filename string, nth int, expected string) bool {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println(filename)
 	defer f.Close()
 
 	scanner := bufio.NewScanner(f)
@@ -82,6 +84,7 @@ func OpenFileAndFindNthString(filename string, nth int, expected string) bool {
 
 		// matching logic
 		ss := strings.Split(trimmed, "=")
+		fmt.Println("*****", ss[nth])
 		if ss[nth] == expected {
 			return true
 		}
